@@ -1,0 +1,226 @@
+/* Reset and basics */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; background: #f0f2f5; color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding:20px; max-width: 1100px; margin-left: auto; margin-right: auto;
+  min-height: 100vh;
+  display: flex; flex-direction: column; gap: 25px;
+}
+h1,h2,h3 {
+  color: #2c3e50; margin-bottom: 8px; font-weight: 700;
+}
+h1 { font-size: 2.2rem; text-align: center; margin-bottom: 20px; }
+h2 { font-size: 1.5rem; margin: 20px 0 15px; border-bottom: 2px solid #3498db; padding-bottom: 5px;}
+h3 { font-size: 1.2rem; margin: 15px 0 10px; }
+button {
+  background:#3498db; border:none; color:#fff; font-weight:700; padding:12px 24px;
+  font-size:1.1rem; border-radius:8px; cursor:pointer; transition: background-color 0.3s ease;
+  max-width: 220px; width: 100%; user-select:none; box-shadow: 0 4px 10px rgb(52 152 219 / 0.4);
+}
+button:hover:not(:disabled){background:#2980b9;}
+button:disabled {
+  background:#a3b3c1;cursor:not-allowed; box-shadow:none;
+}
+select,input[type=number] {
+  width: 100%; padding:10px 12px; font-size:1.05rem;
+  border-radius: 8px; border: 1.8px solid #ccc; margin-bottom: 12px;
+  transition: border-color 0.3s ease; user-select:none;
+}
+select:focus, input[type=number]:focus {
+  border-color:#3498db; outline:none; box-shadow:0 0 5px #3498dbaa;
+}
+.section {
+  background:#fff; padding:20px 25px; border-radius:14px;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 0.08); box-sizing:border-box;
+}
+.compact-list {
+  display:flex; flex-wrap:wrap; gap:10px; font-weight:700;justify-content: center; /* Center items */
+}
+.node-badge {
+  background:#3498db; color:#fff; padding:8px 14px;
+  border-radius:25px; font-size:1rem; user-select:none;
+  transition: background-color 0.3s ease;
+}
+
+.node-badge.regenerator { background:#e67e22; }
+.node-badge.assigned { background:#27ae60; }
+.path-nodes { font-weight:700; margin:10px 0 15px; font-size:1.05rem; }
+.demand-info { font-size: 0.9rem; font-weight: normal; color: #e74c3c; margin-left: 10px; }
+.slot-table {
+  width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 1rem;
+}
+.slot-table th, .slot-table td {
+  border: 1px solid #ddd; padding: 10px 14px; text-align: center;
+}
+.slot-table th { background: #3498db; color: white; }
+.segments-container {
+  max-height: 180px; overflow-y: auto; border: 1px solid #eee;
+  border-radius: 10px; padding: 12px 16px; background: #fafafa; font-size: 1rem;
+}
+#graph-svg {
+  width: 100%; height: auto; user-select: none; background: #fff;
+  border-radius: 15px; box-shadow: 0 3px 14px rgba(0,0,0,0.1);
+  margin-top: 12px; border: 1.5px solid #ddd;
+}
+.edge {
+  stroke: #aaa; stroke-width: 2.8px; transition: stroke 0.3s ease;
+}
+.edge.highlighted {
+  stroke: #3498db; stroke-width: 5px; filter: drop-shadow(0 0 2px #3498db77);
+}
+.edge.assigned-reg {
+  stroke: #27ae60; stroke-width: 5px; filter: drop-shadow(0 0 2px #27ae6077);
+}
+
+/* Path colors for different requests */
+.edge.path-0 { stroke: #3498db; stroke-width: 5px; }
+.edge.path-1 { stroke: #e74c3c; stroke-width: 5px; }
+.edge.path-2 { stroke: #9b59b6; stroke-width: 5px; }
+.edge.path-3 { stroke: #f39c12; stroke-width: 5px; }
+.edge.path-4 { stroke: #2ecc71; stroke-width: 5px; }
+.edge.path-5 { stroke: #1abc9c; stroke-width: 5px; }
+.edge.path-6 { stroke: #d35400; stroke-width: 5px; }
+.edge.path-7 { stroke: #8e44ad; stroke-width: 5px; }
+.edge.path-8 { stroke: #27ae60; stroke-width: 5px; }
+.edge.path-9 { stroke: #16a085; stroke-width: 5px; }
+
+.edge-label {
+  font-size: 13px;
+  fill: #333;
+  font-weight: bold;
+  text-anchor: middle;
+  pointer-events: none;
+  /* align: central; */
+}
+.node-circle {
+  fill: #3498db; stroke: #2980b9; stroke-width: 2.5px; cursor: default;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+.node-circle.candidate {
+  fill: #e67e22; stroke: #d35400; filter: drop-shadow(0 0 3px #e67e2277);
+}
+.node-circle.assigned {
+  fill: #27ae60; stroke: #1e8449; stroke-width: 3.5px;
+  filter: drop-shadow(0 0 4px #27ae6077);
+}
+.node-circle.source-dest {
+  fill: #e74c3c; stroke: #c0392b; stroke-width: 3.5px;
+  filter: drop-shadow(0 0 5px #e74c3c77);
+}
+.node-label {
+  font-weight: 700; fill: #fff; pointer-events: none; user-select: none;
+  font-size: 1.1rem; text-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.request-field {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #e0e0e0;
+}
+
+.request-field h3 {
+  margin-top: 0;
+}
+
+.demand-input {
+  max-width: 180px;
+  background-color: #f5f5f5;
+  margin-top: 5px;
+}
+
+.results-request {
+  background: #f5f9ff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.path-color-indicator {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.result-graph-svg {
+  width: 100%;
+  height: 320px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin: 15px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.path-visualization {
+  margin: 15px 0 20px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+#reset-btn {
+  background: #e74c3c;
+  transition: background-color 0.2s;
+  width: auto;
+  padding: 12px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+#reset-btn:hover {
+  background: #c0392b;
+}
+
+#reset-btn-container {
+  display: none; /* Initially hidden, shown after computing paths */
+  width: auto;
+  position: static;
+  margin: 30px 0 20px auto;
+  text-align: right;
+  padding: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  body {
+    max-width: 100%; padding: 12px;
+  }
+  h1 { font-size: 1.7rem; }
+  h2 { font-size: 1.25rem; }
+  .slot-table, .slot-table th, .slot-table td { font-size: 0.9rem; }
+  #graph-svg { height: 320px; }
+}
+@media (max-width: 480px) {
+  button, select, input[type=number] { max-width: 100%; }
+  .slot-table th, .slot-table td {
+    padding: 6px 8px; font-size: 0.8rem;
+  }
+  .node-label { font-size: 0.85rem; }
+  .node-badge, .node-badge.assigned, .node-badge.regenerator {
+    padding: 5px 9px; font-size: 0.8rem;
+  }
+  .segments-container {
+    max-height: 140px;
+  }
+  #graph-svg {
+    height: 240px; /* Further adjust for mobile */
+  }
+}
+@media (max-width: 900px) {
+  #graph-svg {
+    height: 320px; /* Adjust height for smaller screens */
+  }
+}
