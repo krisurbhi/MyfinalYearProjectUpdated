@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Network Regenerator Planner with Graph Visualization</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Regenerator Placement and Assignment in Translucent Optical Network</h1>
+
+  <div class="section" id="node-degrees-section" aria-label="Node degrees display">
+    <h2>Node Degrees</h2>
+    <div id="node-degrees" class="compact-list"></div>
+  </div>
+
+  <div class="section" id="candidate-regenerators-section" aria-label="Candidate regenerator nodes display">
+    <h2>Candidate Regenerator Nodes<br/><small>(Node Degree First Algorithm)</small></h2>
+    <div id="candidate-regenerators" class="compact-list"></div>
+  </div>
+
+  <div class="section" id="graph-section" aria-label="Network Graph Visualization" role="region" tabIndex="0">
+    <h2>Network Graph Visualization</h2>
+    <svg id="graph-svg" viewBox="0 0 1000 420" aria-describedby="graph-desc" role="img" aria-label="Network graph visualization with nodes and edges"></svg>
+    <div id="graph-desc" style="position:absolute; left:-9999px;">
+      Graph showing network nodes as circles and edges as lines. Candidate regenerators highlighted orange,
+      assigned regenerators green, and path edges blue.
+    </div>
+  </div>
+
+  <div class="section" id="connection-requests-section" aria-label="Connection requests input">
+    <h2>Connection Requests</h2>
+    <div class="input-group">
+      <label for="num-requests">Number of Connection Requests:</label>
+      <input type="number" id="num-requests" min="1" max="10" placeholder="Enter number" aria-label="Number of connection requests">
+      <button id="generate-requests-btn" aria-label="Generate request fields">Generate Request Fields</button>
+    </div>
+    <div id="request-fields-container"></div>
+    <button id="compute-all-paths-btn" style="display:none;" aria-label="Compute all paths">Compute All Paths</button>
+    <div id="input-error" style="color:#e74c3c; margin-top:8px; font-weight:600;"></div>
+  </div>
+
+  <div class="section" id="results-container" style="display:none;" aria-live="polite">
+    <h2>Path Results</h2>
+    <div id="results-content"></div>
+  </div>
+
+  <script src="network.js"></script>
+</body>
+</html>
